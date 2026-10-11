@@ -1,0 +1,69 @@
+﻿@model List<ResultNotificationDto>
+@{
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Bildirim İşlemleri</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Bildirim Listesi</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-sub">
+                            Bildirimler ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz : Okunma durumunu değiştirmek için butona tıklamanız yeterli olacaktır.
+                        </div>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Açıklama</th>
+                                    <th scope="col">Tarih</th>
+                                    <th scope="col">Durum</th>
+                                    <th scope="col">Sil</th>
+                                    <th scope="col">Güncelle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@item.Description</td>
+                                        <td>@item.Date</td>
+                                        <td>
+                                            @if (item.Status)
+                                            {
+                                                <a href="/Notifications/NotificationStatusChangeToFalse/@item.Id"
+                                                   class="btn btn-success">
+                                                    Okundu
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Notifications/NotificationStatusChangeToTrue/@item.Id"
+                                                   class="btn btn-secondary">
+                                                    Okunmadı
+                                                </a>
+                                            }
+                                        </td>
+                                        <td><a href="/Notifications/Delete/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+                                        <td><a href="/Notifications/Update/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a href="/Notifications/Create/" class="btn btn-outline-primary">Yeni Bildirim Girişi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

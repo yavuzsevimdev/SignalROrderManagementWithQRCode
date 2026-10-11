@@ -1,0 +1,301 @@
+﻿@{
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    $(document).ready(() => {
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7091/SignalRHub").build();
+
+        $('#connstatus').text(connection.state);
+
+        connection.on("ReceiveTotalMoneyCaseAmount", (totalMoneyCaseAmount) => {
+            $("#totalMoneyCaseAmount").text(totalMoneyCaseAmount);
+        });
+
+        connection.on("ReceiveActiveOrderCount", (activeOrderCount) => {
+            $("#activeOrderCount").text(activeOrderCount);
+        });
+
+        connection.on("ReceiveMenuTableCount", (menuTableCount) => {
+            $("#menuTableCount").text(menuTableCount);
+        });
+
+        connection.on("ReceiveTotalOrderCount", (totalOrderCount) => {
+            $("#totalOrderCount").empty();
+            $("#totalOrderCount").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Toplam Sipariş Sayısı</span>
+                <span class="text-muted fw-bold"> ${totalOrderCount}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: ${totalOrderCount}%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${totalOrderCount}%"></div>
+            </div>
+            `);
+        });
+
+        connection.on("ReceiveTodayTotalPrice", (todayTotalPrice) => {
+            $("#todayTotalPrice").empty();
+            $("#todayTotalPrice").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Günlük Toplam Alınan Ödeme</span>
+                <span class="text-muted fw-bold"> ${todayTotalPrice}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: ${todayTotalPrice}%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${todayTotalPrice}%"></div>
+            </div>
+            `);
+        });
+
+        connection.on("ReceiveLastOrderPrice", (lastOrderPrice) => {
+            $("#lastOrderPrice").empty();
+            $("#lastOrderPrice").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Son Sipariş Fiyatı</span>
+                <span class="text-muted fw-bold"> ${lastOrderPrice}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: ${lastOrderPrice}%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${lastOrderPrice}%"></div>
+            </div>
+            `);
+        });
+    
+        connection.on("ReceiveProductPriceAvg", (productPriceAvg) => {
+            $("#productPriceAvg").empty();
+            $("#productPriceAvg").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Aktif Sipariş Sayısı</span>
+                <span class="text-muted fw-bold"> ${productPriceAvg}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: ${productPriceAvg}%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${productPriceAvg}%"></div>
+            </div>
+            `);
+        });
+    
+
+
+        connection.on("ReceiveProductCount", (productCount) => {
+            $("#productCount").text(productCount);
+        });
+
+        connection.on("ReceiveProductCountByCategoryNameHamburger", (productCountByCategoryNameHamburger) => {
+            $("#productCountByCategoryNameHamburger").empty();
+            $("#productCountByCategoryNameHamburger").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Toplam Hamburger Çeşiti</span>
+                <span class="text-muted fw-bold"> ${productCountByCategoryNameHamburger}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: ${productCountByCategoryNameHamburger}%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${productCountByCategoryNameHamburger}%"></div>
+            </div>
+            `);
+        });
+
+        connection.on("ReceiveProductCountByCategoryNameDrink", (productCountByCategoryNameDrink) => {
+            $("#productCountByCategoryNameDrink").empty();
+            $("#productCountByCategoryNameDrink").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Toplam İçecek Çeşiti</span>
+                <span class="text-muted fw-bold"> ${productCountByCategoryNameDrink}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-info" role="progressbar" style="width: ${productCountByCategoryNameDrink}%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${productCountByCategoryNameDrink}%"></div>
+            </div>
+            `);
+        });
+
+        connection.on("ReceiveProductCountByCategoryNameSalad", (productCountByCategoryNameSalad) => {
+            $("#productCountByCategoryNameSalad").empty();
+            $("#productCountByCategoryNameSalad").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Toplam Salata Çeşiti</span>
+                <span class="text-muted fw-bold"> ${productCountByCategoryNameSalad}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: ${productCountByCategoryNameSalad}%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${productCountByCategoryNameSalad}%"></div>
+            </div>
+            `);
+        });
+
+        connection.on("ReceiveProductCountByCategoryNamePasta", (productCountByCategoryNamePasta) => {
+            $("#productCountByCategoryNamePasta").empty();
+            $("#productCountByCategoryNamePasta").append(`
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted">Toplam Makarna Çeşiti</span>
+                <span class="text-muted fw-bold"> ${productCountByCategoryNamePasta}</span>
+            </div>
+            <div class="progress mb-2" style="height: 7px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: ${productCountByCategoryNamePasta}%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="${productCountByCategoryNamePasta}%"></div>
+            </div>
+            `);
+        });
+
+        connection.on("ReceiveProductNameByMaxPrice", (productNameByMaxPrice) => {
+            $("#productNameByMaxPrice").text(productNameByMaxPrice);
+        });
+
+        connection.on("ReceiveProductNameByMinPrice", (productNameByMinPrice) => {
+            $("#productNameByMinPrice").text(productNameByMinPrice);
+        });
+
+
+        connection.start().then(() => {
+            $('#connstatus').text(connection.state);
+
+            setInterval(() => {
+                connection.invoke("SendProgress");
+            }, 1000);
+
+        }).catch((err) => { console.log(err) });
+    });
+
+
+
+    
+
+</script>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Admin İstatistikler & Durumlar</h4>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="row row-card-no-pd">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="fw-bold mt-1">Kasadaki Toplam Tutar</p>
+                                <h4><b id="totalMoneyCaseAmount"></b></h4>
+                                <a href="/Order/Create/" class="btn btn-primary btn-full text-left mt-3 mb-3"><i class="la la-plus"></i> Yeni Sipariş</a>
+                            </div>
+                            <div class="card-footer">
+                                <ul class="nav">
+                                    <li class="nav-item"><a class="btn btn-default btn-link" href="/Order/Index/"><i class="la la-history"></i> Siparişler</a></li>
+                                    <li class="nav-item ml-auto"><a class="btn btn-default btn-link" href="/ProgressBars/Index"><i class="la la-refresh"></i> Sayfayı Yenile</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="progress-card" id="totalOrderCount"></div>
+                                <div class="progress-card" id="todayTotalPrice"></div>
+                                <div class="progress-card" id="lastOrderPrice"></div>
+                                <div class="progress-card" id="productPriceAvg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats">
+                            <div class="card-body">
+                                <p class="fw-bold mt-1">Statistic</p>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center icon-warning">
+                                            <i class="la la-shopping-cart text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">Aktif Siparişler</p>
+                                            <h4 class="card-title" id="activeOrderCount"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="la la-table text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">Masa Sayısı</p>
+                                            <h4 class="card-title" id="menuTableCount"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="col-md-12">
+
+                <div class="row row-card-no-pd">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="fw-bold mt-1">Toplam Ürün Sayısı</p>
+                                <h4><b id="productCount"></b></h4>
+                                <a href="/Product/Create/" class="btn btn-primary btn-full text-left mt-3 mb-3"><i class="la la-plus"></i> Yeni Ürün Ekle</a>
+                            </div>
+                            <div class="card-footer">
+                                <ul class="nav">
+                                    <li class="nav-item"><a class="btn btn-default btn-link" href="/Product/Index/"><i class="la la-history"></i> Ürünler</a></li>
+                                    <li class="nav-item ml-auto"><a class="btn btn-default btn-link" href="/ProgressBars/Index"><i class="la la-refresh"></i> Sayfayı Yenile</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="progress-card" id="productCountByCategoryNameHamburger"></div>
+                                <div class="progress-card" id="productCountByCategoryNameDrink"></div>
+                                <div class="progress-card" id="productCountByCategoryNameSalad"></div>
+                                <div class="progress-card" id="productCountByCategoryNamePasta"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stats">
+                            <div class="card-body">
+                                <p class="fw-bold mt-1">Statistic</p>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center icon-warning">
+                                            <i class="la la-long-arrow-up text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">En Yüksek Fiyatlı Ürün</p>
+                                            <h4 class="card-title" id="productNameByMaxPrice"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="la la-long-arrow-down text-primary"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">En Düşük Fiyatlı Ürün</p>
+                                            <h4 class="card-title" id="productNameByMinPrice"></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

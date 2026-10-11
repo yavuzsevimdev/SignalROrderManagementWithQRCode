@@ -1,0 +1,105 @@
+﻿@model List<ResultSliderDto>
+
+<section class="slider_section ">
+    <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                @if(i == 0)
+                {
+                    <div class="carousel-item active">
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-md-7 col-lg-6 ">
+                                    <div class="detail-box">
+                                        <h1>
+                                            @Model[i].Title
+                                        </h1>
+                                        <p>
+                                            @Model[i].Description
+                                        </p>
+                                        <div class="btn-box">
+                                            <a href="/Menu/Index" class="btn1">
+                                                Sipariş Ver
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(i == 1)
+                {
+                    <div class="carousel-item">
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-md-7 col-lg-6 ">
+                                    <div class="detail-box">
+                                        <h1>
+                                            @Model[i].Title
+                                        </h1>
+                                        <p>
+                                            @Model[i].Description
+                                        </p>
+                                        <div class="btn-box">
+                                            <a href="/Menu/Index" class="btn1">
+                                                Sipariş Ver
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if(i == 2)
+                {
+                    <div class="carousel-item">
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-md-7 col-lg-6 ">
+                                    <div class="detail-box">
+                                        <h1>
+                                            @Model[i].Title
+                                        </h1>
+                                        <p>
+                                            @Model[i].Description
+                                        </p>
+                                        <div class="btn-box">
+                                            <a href="/Menu/Index" class="btn1">
+                                                Sipariş Ver
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+            }
+        </div>
+        <div class="container">
+            <ol class="carousel-indicators">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    @if(i == 0)
+                    {
+                        <li data-target="#customCarousel1" data-slide-to="@i" class="active"></li>
+                    }
+                    @if (i == 1)
+                    {
+                        <li data-target="#customCarousel1" data-slide-to="@i"></li>
+                    }
+                    @if (i == 2)
+                    {
+                        <li data-target="#customCarousel1" data-slide-to="@i"></li>
+                    }
+                }
+            </ol>
+        </div>
+    </div>
+
+</section>
+</div>

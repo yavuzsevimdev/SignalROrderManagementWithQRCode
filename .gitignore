@@ -1,0 +1,26 @@
+```gitignore
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# NuGet
+packages/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+secrets.json
+
+# Logs
+*.log
+```

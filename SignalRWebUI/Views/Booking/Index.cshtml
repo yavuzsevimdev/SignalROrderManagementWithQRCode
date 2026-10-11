@@ -1,0 +1,85 @@
+﻿@model List<ResultBookingDto>
+@{
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    $(document).ready(() => {
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7091/SignalRHub").build();
+
+        $('#connstatus').text(connection.state);
+
+        connection.on("ReceiveBookingList", (bookingList) => {
+            console.log(bookingList);
+            let tablehtml = `<table class="table mt-3">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Ad Soyad</th>
+                                        <th scope="col">Telefon</th>
+                                        <th scope="col">Kişi Sayısı</th>
+                                        <th scope="col">Rezervasyon Durumu</th>
+                                        <th scope="col">Sil</th>
+                                        <th scope="col">Güncelle</th>
+                                        <th scope="col">Onayla</th>
+                                        <th scope="col">İptal Et</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+            $.each(bookingList, (index, item) => {
+                    tablehtml += `<tr>
+                                        <th>${index + 1}</th>
+                                        <td>${item.name}</td>
+                                        <td>${item.phone}</td>
+                                        <td>${item.personCount}</td>
+                                        <td>${item.description}</td>
+                                        <td><a href="/Booking/Delete/${item.id}" class="btn btn-outline-danger">Sil</a></td>
+                                        <td><a href="/Booking/Update/${item.id}" class="btn btn-outline-success">Güncelle</a></td>
+                                        <td><a href="/Booking/BookingStatusApproved/${item.id}" class="btn btn-outline-info">Onayla</a></td>
+                                        <td><a href="/Booking/BookingStatusCancelled/${item.id}" class="btn btn-outline-dark">İptal Et</a></td>
+                                    </tr>`;
+            });
+            tablehtml += `</tbody></table>`;
+            $("#bookingList").html(tablehtml);
+        });
+
+        connection.start().then(() => {
+            $('#connstatus').text(connection.state);
+
+            setInterval(() => {
+                connection.invoke("GetBookingList");
+            }, 2000);
+
+        }).catch((err) => { console.log(err) });
+    });
+</script>
+
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Rezervasyon İşlemleri</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Rezervasyon Listesi</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-sub">
+                            Rezervasyon ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz :
+                        </div>
+                        <div id="bookingList"></div>
+                        <a href="/Booking/Create/" class="btn btn-outline-primary">Yeni Rezervasyon Girişi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

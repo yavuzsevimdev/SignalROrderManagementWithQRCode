@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">QR Kod İşlemleri</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post" asp-action="Index" asp-controller="QRCode" enctype="multipart/form-data">
+                    <input type="text" name="value" class="form-control" />
+                    <br />
+                    <button type="submit" name="operation" value="create" class="btn btn-warning">QR Kod Oluştur</button>
+                    @if (ViewBag.QrCodeImage != null)
+                    {
+                        <br />
+                        <br />
+                        <img src="@ViewBag.QrCodeImage" alt="" style="width:400px; height:400px;" />
+                    }
+
+                    <hr class="my-4" />
+
+                    <h4 class="page-title">QR Kod Çöz</h4>
+                    <input type="file" name="qrImage" class="form-control" accept="image/*" />
+                    <br />
+                    <button type="submit" name="operation" value="decode" class="btn btn-warning">QR Kodu Çöz</button>
+
+                    @if (ViewBag.DecodedValue != null)
+                    {
+                        <div class="alert alert-success mt-3">
+                            <strong>QR Kod İçeriği: </strong>
+                            <p style="overflow-wrap:anywhere">@ViewBag.DecodedValue</p>
+                        </div>
+                    }
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger mt-3">
+                            @ViewBag.Error
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
